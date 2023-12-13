@@ -1,6 +1,7 @@
 package com.file.uploader.service.implementation;
 
 import com.file.uploader.controller.exception.BadRequestException;
+import com.file.uploader.controller.exception.DuplicatedFileException;
 import com.file.uploader.controller.exception.NotFoundException;
 import com.file.uploader.model.FileModel;
 import com.file.uploader.repository.FileRepository;
@@ -29,6 +30,9 @@ public class FileServiceImpl implements FileService {
     @Override
     public FileModel save(MultipartFile file) {
         try {
+            if (fileRepository.existsByName(file.getOriginalFilename())) {
+                throw new DuplicatedFileException("File already exist");
+            }
             FileModel fileModel = FileModel.builder()
                     .name(file.getOriginalFilename())
                     .type(file.getContentType())

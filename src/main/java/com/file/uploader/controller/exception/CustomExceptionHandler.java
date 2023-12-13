@@ -74,7 +74,20 @@ public class CustomExceptionHandler {
                 .message(maxUploadSizeExceededException.getMessage())
                 .build();
         return ResponseEntity
-                .status(404)
+                .status(423)
+                .body(apiResponse);
+    }
+
+    @ExceptionHandler(value = DuplicatedFileException.class)
+    public ResponseEntity<Object> duplicatedFile(DuplicatedFileException duplicatedFile) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timestamp(Instant.now())
+                .code(100)
+                .status(HttpStatus.CONTINUE)
+                .message(duplicatedFile.getMessage())
+                .build();
+        return ResponseEntity
+                .status(100)
                 .body(apiResponse);
     }
 }
