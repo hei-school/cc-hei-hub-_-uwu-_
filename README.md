@@ -68,13 +68,13 @@ spring.datasource.username=your username
 
 ### Exceptions handled
 
-| Code | Status          | Action                                                                                                                                                                  |
-|------|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 404  | FILE_NOT_FOUND  | if you try to retrieve a non-existent file                                                                                                                              |
-| 423  | FILE_TOO_LARGE  | if you try to upload a file with a size that exceeds the maximum allowed The maximum size is defined in the application.properties file, which is currently set to 1GB. |
-| 501  | NOT_IMPLEMENTED | if you are trying to access an endpoint that is not yet finished (/file/uploads)                                                                                        |
-| 100  | DUPLICATE_FILE  | if you upload a file with a name that already exists                                                                                                                    |
-| 408  | REQUEST_TIMEOUT | if the server takes too long to reply (we have explicitly defined a timeout of `20 seconds` on the `/file` endpoint)                                                    |                                                    
+| Code | Status          | Action                                                                                                                                                                                                   |
+|------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 404  | FILE_NOT_FOUND  | if you try to retrieve a non-existent file                                                                                                                                                               |
+| 423  | FILE_TOO_LARGE  | if you try to upload a file with a size that exceeds the maximum allowed The maximum size is defined in the application.properties file, which is currently set to 1GB.                                  |
+| 501  | NOT_IMPLEMENTED | if you are trying to access an endpoint that is not yet finished (/file/uploads)                                                                                                                         |
+| 100  | DUPLICATE_FILE  | if you upload a file with a name that already exists                                                                                                                                                     |
+| 408  | REQUEST_TIMEOUT | if the server takes too long to reply (we have explicitly defined a timeout of `20 seconds` on the `/file` endpoint so if you have a lot of large files, this endpoint will return timeout all the time) |                                                    
 
 ### Team
 
