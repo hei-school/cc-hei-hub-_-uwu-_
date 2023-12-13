@@ -75,6 +75,7 @@ spring.datasource.username=your username
 | 501  | NOT_IMPLEMENTED | if you are trying to access an endpoint that is not yet finished (/file/uploads)                                                                                        |
 | 100  | DUPLICATE_FILE  | if you upload a file with a name that already exists                                                                                                                    |
 | 408  | REQUEST_TIMEOUT | if the server takes too long to reply (we have explicitly defined a timeout of `20 seconds` on the `/file` endpoint)                                                    |                                                    
+
 ### Team
 
 - Mickaël Jerry
