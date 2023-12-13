@@ -2,6 +2,7 @@ package com.file.uploader.service.implementation;
 
 import com.file.uploader.controller.exception.BadRequestException;
 import com.file.uploader.controller.exception.DuplicatedFileException;
+import com.file.uploader.controller.exception.FileNotFoundException;
 import com.file.uploader.controller.exception.NotFoundException;
 import com.file.uploader.model.FileModel;
 import com.file.uploader.repository.FileRepository;
@@ -21,7 +22,7 @@ public class FileServiceImpl implements FileService {
   public FileModel findByName(String name) {
     Optional<FileModel> fileModel = fileRepository.findByName(name);
     if (fileModel.isEmpty()) {
-      throw new NotFoundException("The file " + name + " does not exist");
+      throw new FileNotFoundException("The file " + name + " does not exist");
     }
     return fileModel.get();
   }

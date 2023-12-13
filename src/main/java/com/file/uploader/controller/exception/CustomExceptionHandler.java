@@ -12,15 +12,27 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @ControllerAdvice
 @Slf4j
 public class CustomExceptionHandler {
-  @ExceptionHandler(value = {NotFoundException.class})
-  public ResponseEntity<Object> notFoundExceptionHandler(NotFoundException notFoundException) {
+  @ExceptionHandler(value = {NotFoundException.class, NoResourceFoundException.class})
+  public ResponseEntity<Object> notFoundExceptionHandler(RuntimeException exception) {
     ApiResponse apiResponse =
         ApiResponse.builder()
             .timestamp(Instant.now())
             .code(404)
-            .status(HttpStatus.NOT_FOUND)
-            .message(notFoundException.getMessage())
+            .status(HttpStatus.NOT_FOUND.toString())
+            .message(exception.getMessage())
             .build();
+    return ResponseEntity.status(404).body(apiResponse);
+  }
+
+  @ExceptionHandler(value = {FileNotFoundException.class})
+  public ResponseEntity<Object> fileNotFoundExceptionHandler(FileNotFoundException exception) {
+    ApiResponse apiResponse =
+            ApiResponse.builder()
+                    .timestamp(Instant.now())
+                    .code(404)
+                    .status(CustomHttpStatus.FILE_NOT_FOUND.toString())
+                    .message(exception.getMessage())
+                    .build();
     return ResponseEntity.status(404).body(apiResponse);
   }
 
@@ -31,7 +43,7 @@ public class CustomExceptionHandler {
         ApiResponse.builder()
             .timestamp(Instant.now())
             .code(400)
-            .status(HttpStatus.BAD_REQUEST)
+            .status(HttpStatus.BAD_REQUEST.toString())
             .message(badRequestException.getMessage())
             .build();
     return ResponseEntity.status(400).body(apiResponse);
@@ -44,23 +56,10 @@ public class CustomExceptionHandler {
         ApiResponse.builder()
             .timestamp(Instant.now())
             .code(501)
-            .status(HttpStatus.NOT_IMPLEMENTED)
+            .status(HttpStatus.NOT_IMPLEMENTED.toString())
             .message(notImplementedException.getMessage())
             .build();
     return ResponseEntity.status(501).body(apiResponse);
-  }
-
-  @ExceptionHandler(value = {NoResourceFoundException.class})
-  public ResponseEntity<Object> noResourceFoundException(
-      NoResourceFoundException noResourceFoundException) {
-    ApiResponse apiResponse =
-        ApiResponse.builder()
-            .timestamp(Instant.now())
-            .code(404)
-            .status(HttpStatus.NOT_FOUND)
-            .message(noResourceFoundException.getMessage())
-            .build();
-    return ResponseEntity.status(404).body(apiResponse);
   }
 
   @ExceptionHandler(value = MaxUploadSizeExceededException.class)
@@ -70,7 +69,7 @@ public class CustomExceptionHandler {
         ApiResponse.builder()
             .timestamp(Instant.now())
             .code(423)
-            .status(HttpStatus.LOCKED)
+            .status(CustomHttpStatus.FILE_TOO_LARGE.toString())
             .message(maxUploadSizeExceededException.getMessage())
             .build();
     return ResponseEntity.status(423).body(apiResponse);
@@ -82,7 +81,7 @@ public class CustomExceptionHandler {
         ApiResponse.builder()
             .timestamp(Instant.now())
             .code(100)
-            .status(HttpStatus.CONTINUE)
+            .status(CustomHttpStatus.DUPLICATE_FILE.toString())
             .message(duplicatedFile.getMessage())
             .build();
     return ResponseEntity.status(100).body(apiResponse);
