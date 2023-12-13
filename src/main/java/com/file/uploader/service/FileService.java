@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface FileService {
     FileModel save(MultipartFile file) throws Exception;
+    FileModel findByName(String name);
     List<FileModel> findAllFile();
 }

@@ -9,17 +9,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class FileServiceImpl implements FileService {
     private FileRepository fileRepository;
+
+    @Override
+    public FileModel findByName(String name) {
+        Optional<FileModel> fileModel = fileRepository.findByName(name);
+        if (fileModel.isEmpty()) {
+            throw new BadRequestException("File with name: " + name + " does not exist");
+        }
+        return fileModel.get();
+    }
+
     @Override
     public FileModel save(MultipartFile file) throws Exception {
         try {
-            if (file.getBytes().length > (1024 * 1024)) {
-                throw new BadRequestException("File size exceeds maximum limit");
-            }
             FileModel fileModel = FileModel.builder()
                     .name(file.getOriginalFilename())
                     .type(file.getContentType())
@@ -27,7 +35,7 @@ public class FileServiceImpl implements FileService {
                     .build();
             return fileRepository.save(fileModel);
         } catch (Exception e) {
-            throw new BadRequestException("Could not save file: " + file.getName());
+            throw new BadRequestException(e);
         }
     }
 
