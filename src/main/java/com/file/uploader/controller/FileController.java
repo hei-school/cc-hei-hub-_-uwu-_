@@ -23,7 +23,7 @@ public class FileController {
     private FileService fileService;
     private FileMapper fileMapper;
     @PostMapping("/upload")
-    public FileDto fileUploading(@RequestParam(name = "file")MultipartFile file) throws Exception {
+    public FileDto fileUploading(@RequestParam(name = "file")MultipartFile file) {
         FileModel fileModel = fileService.save(file);
         return fileMapper.toRest(fileModel);
     }

@@ -1,6 +1,7 @@
 package com.file.uploader.service.implementation;
 
 import com.file.uploader.controller.exception.BadRequestException;
+import com.file.uploader.controller.exception.NotFoundException;
 import com.file.uploader.model.FileModel;
 import com.file.uploader.repository.FileRepository;
 import com.file.uploader.service.FileService;
@@ -20,13 +21,13 @@ public class FileServiceImpl implements FileService {
     public FileModel findByName(String name) {
         Optional<FileModel> fileModel = fileRepository.findByName(name);
         if (fileModel.isEmpty()) {
-            throw new BadRequestException("File with name: " + name + " does not exist");
+            throw new NotFoundException("The file " + name +" does not exist");
         }
         return fileModel.get();
     }
 
     @Override
-    public FileModel save(MultipartFile file) throws Exception {
+    public FileModel save(MultipartFile file) {
         try {
             FileModel fileModel = FileModel.builder()
                     .name(file.getOriginalFilename())
@@ -35,7 +36,7 @@ public class FileServiceImpl implements FileService {
                     .build();
             return fileRepository.save(fileModel);
         } catch (Exception e) {
-            throw new BadRequestException(e);
+            throw new BadRequestException(e.getMessage());
         }
     }
 
