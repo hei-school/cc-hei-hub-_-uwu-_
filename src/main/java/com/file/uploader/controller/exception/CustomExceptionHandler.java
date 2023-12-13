@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
 @Slf4j
@@ -30,6 +31,18 @@ public class CustomExceptionHandler {
                 .build();
         return ResponseEntity
                 .status(400)
+                .body(apiResponse);
+    }
+
+    @ExceptionHandler(value = {NoResourceFoundException.class})
+    public ResponseEntity<Object> noResourceFoundException(NoResourceFoundException noResourceFoundException) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .code(404)
+                .status(HttpStatus.NOT_FOUND)
+                .message(noResourceFoundException.getMessage())
+                .build();
+        return ResponseEntity
+                .status(404)
                 .body(apiResponse);
     }
 }
