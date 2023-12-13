@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.Instant;
@@ -58,6 +59,19 @@ public class CustomExceptionHandler {
                 .code(404)
                 .status(HttpStatus.NOT_FOUND)
                 .message(noResourceFoundException.getMessage())
+                .build();
+        return ResponseEntity
+                .status(404)
+                .body(apiResponse);
+    }
+
+    @ExceptionHandler(value = MaxUploadSizeExceededException.class)
+    public ResponseEntity<Object> maxUploadSizeExceededException(MaxUploadSizeExceededException maxUploadSizeExceededException) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timestamp(Instant.now())
+                .code(423)
+                .status(HttpStatus.LOCKED)
+                .message(maxUploadSizeExceededException.getMessage())
                 .build();
         return ResponseEntity
                 .status(404)
