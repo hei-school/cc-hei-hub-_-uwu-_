@@ -1,6 +1,7 @@
 package com.file.uploader.controller;
 
 import com.file.uploader.controller.dto.FileDto;
+import com.file.uploader.controller.exception.NotImplementedException;
 import com.file.uploader.controller.mapper.FileMapper;
 import com.file.uploader.model.FileModel;
 import com.file.uploader.service.FileService;
@@ -23,10 +24,16 @@ import java.util.List;
 public class FileController {
     private FileService fileService;
     private FileMapper fileMapper;
+
     @PostMapping("/upload")
     public FileDto fileUploading(@RequestParam(name = "file")MultipartFile file) {
         FileModel fileModel = fileService.save(file);
         return fileMapper.toRest(fileModel);
+    }
+
+    @PostMapping("/uploads")
+    public List<FileDto> fileListUploading() {
+        throw new NotImplementedException("This feature is not yet complete");
     }
 
     @GetMapping("show/{name}")

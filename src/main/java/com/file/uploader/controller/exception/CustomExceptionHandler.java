@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import java.time.Instant;
+
 @ControllerAdvice
 @Slf4j
 public class CustomExceptionHandler {
     @ExceptionHandler(value = {NotFoundException.class})
     public ResponseEntity<Object> notFoundExceptionHandler(NotFoundException notFoundException) {
         ApiResponse apiResponse = ApiResponse.builder()
+                .timestamp(Instant.now())
                 .code(404)
                 .status(HttpStatus.NOT_FOUND)
                 .message(notFoundException.getMessage())
@@ -25,6 +28,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = {BadRequestException.class})
     public ResponseEntity<Object> badRequestExceptionHandler(BadRequestException badRequestException) {
         ApiResponse apiResponse = ApiResponse.builder()
+                .timestamp(Instant.now())
                 .code(400)
                 .status(HttpStatus.BAD_REQUEST)
                 .message(badRequestException.getMessage())
@@ -34,9 +38,23 @@ public class CustomExceptionHandler {
                 .body(apiResponse);
     }
 
+    @ExceptionHandler(value = {NotImplementedException.class})
+    public ResponseEntity<Object> notImplementedException(NotImplementedException notImplementedException) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .timestamp(Instant.now())
+                .code(501)
+                .status(HttpStatus.NOT_IMPLEMENTED)
+                .message(notImplementedException.getMessage())
+                .build();
+        return ResponseEntity
+                .status(501)
+                .body(apiResponse);
+    }
+
     @ExceptionHandler(value = {NoResourceFoundException.class})
     public ResponseEntity<Object> noResourceFoundException(NoResourceFoundException noResourceFoundException) {
         ApiResponse apiResponse = ApiResponse.builder()
+                .timestamp(Instant.now())
                 .code(404)
                 .status(HttpStatus.NOT_FOUND)
                 .message(noResourceFoundException.getMessage())
