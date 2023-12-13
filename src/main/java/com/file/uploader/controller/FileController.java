@@ -28,10 +28,19 @@ public class FileController {
         return fileMapper.toRest(fileModel);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("show/{name}")
     public void getFile(@PathVariable(name = "name") String name, HttpServletResponse response) throws IOException {
         FileModel fileModel = fileService.findByName(name);
         response.setContentType(fileModel.getType());
+        response.getOutputStream().write(fileModel.getData());
+        response.getOutputStream().close();
+    }
+
+    @GetMapping("download/{name}")
+    public void downloadFile(@PathVariable(name = "name") String name, HttpServletResponse response) throws IOException {
+        FileModel fileModel = fileService.findByName(name);
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileModel.getName());
         response.getOutputStream().write(fileModel.getData());
         response.getOutputStream().close();
     }
