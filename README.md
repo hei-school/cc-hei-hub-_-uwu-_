@@ -4,10 +4,10 @@ Cloud Manager is a Java Spring Boot API designed managing files
 
 ### Features
 
-* **File Upload:** Upload files via `POST /file/upload`
-* **File Download:** Download files with URL generation from `GET /file/download/{name}`
-* **File Information:** Fetch detailed information about a file from `GET /file/show/{name}`
-* **Ping Endpoint:** Verify API health with `GET /ping`
+* **File Upload:** `POST /file/upload`
+* **File Download:**  `GET /file/download/{name}`
+* **File View:** `GET /file/show/{name}`
+* **Ping Endpoint:** `GET /ping`
 
 ### Technologies Used
 
