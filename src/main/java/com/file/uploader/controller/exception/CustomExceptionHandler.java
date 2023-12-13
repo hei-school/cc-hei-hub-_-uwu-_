@@ -20,4 +20,16 @@ public class CustomExceptionHandler {
                 .status(404)
                 .body(apiResponse);
     }
+
+    @ExceptionHandler(value = {BadRequestException.class})
+    public ResponseEntity<Object> badRequestExceptionHandler(BadRequestException badRequestException) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .code(400)
+                .status(HttpStatus.BAD_REQUEST)
+                .message(badRequestException.getMessage())
+                .build();
+        return ResponseEntity
+                .status(400)
+                .body(apiResponse);
+    }
 }
