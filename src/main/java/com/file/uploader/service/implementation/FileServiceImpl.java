@@ -3,7 +3,6 @@ package com.file.uploader.service.implementation;
 import com.file.uploader.controller.exception.BadRequestException;
 import com.file.uploader.controller.exception.DuplicatedFileException;
 import com.file.uploader.controller.exception.FileNotFoundException;
-import com.file.uploader.controller.exception.NotFoundException;
 import com.file.uploader.model.FileModel;
 import com.file.uploader.repository.FileRepository;
 import com.file.uploader.service.FileService;
@@ -30,7 +29,7 @@ public class FileServiceImpl implements FileService {
   @Override
   public FileModel save(MultipartFile file) {
     try {
-      if (fileRepository.existsByName(file.getOriginalFilename())) {
+      if (this.existsByName(file.getOriginalFilename())) {
         throw new DuplicatedFileException("File already exist");
       }
       FileModel fileModel =
@@ -48,5 +47,10 @@ public class FileServiceImpl implements FileService {
   @Override
   public List<FileModel> findAllFile() {
     return fileRepository.findAll();
+  }
+
+  @Override
+  public boolean existsByName(String name) {
+      return fileRepository.existsByName(name);
   }
 }

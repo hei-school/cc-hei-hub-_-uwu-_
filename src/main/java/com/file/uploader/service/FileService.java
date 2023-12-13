@@ -10,4 +10,6 @@ public interface FileService {
   FileModel findByName(String name);
 
   List<FileModel> findAllFile();
+
+  boolean existsByName(String name);
 }
