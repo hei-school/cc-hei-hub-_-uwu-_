@@ -18,11 +18,13 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "\"file\"")
 public class FileModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    @Column(unique = true, nullable = false)
-    private String name;
-    private String type;
-    private byte[] data;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
+
+  @Column(unique = true, nullable = false)
+  private String name;
+
+  private String type;
+  private byte[] data;
 }
