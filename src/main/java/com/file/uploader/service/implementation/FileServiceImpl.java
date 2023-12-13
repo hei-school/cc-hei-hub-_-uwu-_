@@ -42,6 +42,6 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public List<FileModel> findAllFile() {
-        return null;
+        return fileRepository.findAll();
     }
 }

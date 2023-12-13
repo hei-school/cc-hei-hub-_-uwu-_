@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/file")
@@ -43,5 +44,13 @@ public class FileController {
         response.setHeader("Content-Disposition", "attachment; filename=" + fileModel.getName());
         response.getOutputStream().write(fileModel.getData());
         response.getOutputStream().close();
+    }
+
+    @GetMapping("/")
+    public List<FileDto> getFileList() {
+        List<FileModel> fileModelList = fileService.findAllFile();
+        return fileModelList.stream()
+                .map(fileMapper::toRest)
+                .toList();
     }
 }
