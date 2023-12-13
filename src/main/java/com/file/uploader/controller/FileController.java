@@ -54,7 +54,7 @@ public class FileController {
     response.getOutputStream().close();
   }
 
-  @GetMapping("/")
+  @GetMapping("")
   public List<FileDto> getFileList() {
     List<FileModel> fileModelList = fileService.findAllFile();
     return fileModelList.stream().map(fileMapper::toRest).toList();

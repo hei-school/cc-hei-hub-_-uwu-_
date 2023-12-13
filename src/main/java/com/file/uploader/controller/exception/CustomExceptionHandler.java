@@ -1,6 +1,8 @@
 package com.file.uploader.controller.exception;
 
 import java.time.Instant;
+
+import jakarta.persistence.QueryTimeoutException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +14,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @ControllerAdvice
 @Slf4j
 public class CustomExceptionHandler {
-  @ExceptionHandler(value = {NotFoundException.class, NoResourceFoundException.class})
-  public ResponseEntity<Object> notFoundExceptionHandler(RuntimeException exception) {
+  @ExceptionHandler(value = {NotFoundException.class})
+  public ResponseEntity<Object> notFoundExceptionHandler(NotFoundException exception) {
     ApiResponse apiResponse =
         ApiResponse.builder()
             .timestamp(Instant.now())
@@ -21,6 +23,18 @@ public class CustomExceptionHandler {
             .status(HttpStatus.NOT_FOUND.toString())
             .message(exception.getMessage())
             .build();
+    return ResponseEntity.status(404).body(apiResponse);
+  }
+
+  @ExceptionHandler(value = {NoResourceFoundException.class})
+  public ResponseEntity<Object> noResourceFoundException(NoResourceFoundException exception) {
+    ApiResponse apiResponse =
+            ApiResponse.builder()
+                    .timestamp(Instant.now())
+                    .code(404)
+                    .status(HttpStatus.NOT_FOUND.toString())
+                    .message(exception.getMessage())
+                    .build();
     return ResponseEntity.status(404).body(apiResponse);
   }
 
@@ -85,5 +99,17 @@ public class CustomExceptionHandler {
             .message(duplicatedFile.getMessage())
             .build();
     return ResponseEntity.status(100).body(apiResponse);
+  }
+
+  @ExceptionHandler(value = QueryTimeoutException.class)
+  public ResponseEntity<Object> queryTimeOutException(QueryTimeoutException queryTimeoutException) {
+    ApiResponse apiResponse =
+            ApiResponse.builder()
+                    .timestamp(Instant.now())
+                    .code(408)
+                    .status(HttpStatus.REQUEST_TIMEOUT.toString())
+                    .message(queryTimeoutException.getMessage())
+                    .build();
+    return ResponseEntity.status(408).body(apiResponse);
   }
 }

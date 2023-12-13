@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -45,6 +46,7 @@ public class FileServiceImpl implements FileService {
   }
 
   @Override
+  @Transactional(timeout = 3)
   public List<FileModel> findAllFile() {
     return fileRepository.findAll();
   }
